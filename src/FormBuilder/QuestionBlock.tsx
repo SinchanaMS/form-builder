@@ -108,7 +108,7 @@ const QuestionBlock = (props: Props) => {
 
   return (
     <div className="my-4 bg-white border-1 rounded-md border-gray-200 px-4 py-6 w-full">
-      <div className="flex justify-between gap-x-4 items-center">
+      <div className="flex justify-between gap-x-4 items-center flex-wrap gap-y-4 sm:flex-nowrap">
         <Input
           value={questionState.question}
           label="Question title *"
@@ -123,11 +123,6 @@ const QuestionBlock = (props: Props) => {
           options={questionTypeOptions}
           onChange={handleChange}
         />
-        <div
-          className={`h-auto w-8 object-fit transition-discrete ${saving ? "opacity-100" : "opacity-0"}`}
-        >
-          <Spinner />
-        </div>
       </div>
       <QuestionInputByType
         questionState={questionState}
@@ -165,7 +160,6 @@ const QuestionBlock = (props: Props) => {
       )}
       <div className="flex items-center gap-x-2 pt-6">
         <input
-          className="ml-auto "
           type="checkbox"
           name="isRequired"
           id="isRequired"
@@ -173,9 +167,13 @@ const QuestionBlock = (props: Props) => {
           onChange={handleChange}
         />
         <label>Mandatory</label>
-
+        <div
+          className={`h-auto w-8 ml-auto object-fit transition-discrete ${saving ? "opacity-100" : "opacity-0"}`}
+        >
+          <Spinner />
+        </div>
         <FaRegTrashCan
-          className="ml-8 text-xl"
+          className="text-xl sm:ml-2"
           color="red"
           onClick={handleDeleteQuestion}
         />
