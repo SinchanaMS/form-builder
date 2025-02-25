@@ -15,5 +15,4 @@ export const questionTypeOptions = [
     { id: "text", label: "Text" },
     { id: "number", label: "Number" },
     { id: "select", label: "Select" },
-    { id: "multi-select", label: "Multi-select" },
 ]

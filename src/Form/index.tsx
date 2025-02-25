@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { useFormContext } from "../contexts/FormContext"
-import { isFieldValid } from "../helpers"
+import { delay, isFieldValid } from "../helpers"
 import { Question } from "../types"
+import toast from "react-hot-toast"
 
 const renderInput = (
   item: Question,
@@ -95,7 +96,17 @@ const Form = () => {
       }
     })
     if (!hasError) {
-      setIsSubmitted(true)
+      toast.promise(
+        async () => {
+          await delay(800)
+          setIsSubmitted(true)
+        },
+        {
+          loading: "Submitting your response",
+          success: "Submitted successfully",
+          error: "Oops! An error occured. Please try again!",
+        }
+      )
     }
   }
 
@@ -109,6 +120,10 @@ const Form = () => {
       )}
       {formInfo.questions?.map((item) => {
         const value = formData[item.id] || ""
+        const response =
+          item.type === "select"
+            ? item.options.find((opt) => opt.id === value)?.label
+            : value
         return (
           <div
             key={item.id}
@@ -117,7 +132,7 @@ const Form = () => {
             <div className="font-medium">{item.question}</div>
             {isSubmitted ? (
               <p className="text-sm text-gray-700 mt-2 bg-gray-50 p-4 rounded-md">
-                {value}
+                {response || "No response"}
               </p>
             ) : (
               renderInput(item, handleInputChange, value, errors)
@@ -126,7 +141,9 @@ const Form = () => {
         )
       })}
       {isSubmitted ? (
-        <p className="text-green-700 text-sm">Submitted successfully! ✅</p>
+        <p className="text-green-700 text-sm px-2 mt-4">
+          Your response has been submitted successfully!
+        </p>
       ) : (
         <button
           type="submit"

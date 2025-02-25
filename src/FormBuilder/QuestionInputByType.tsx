@@ -1,6 +1,7 @@
 import React from "react"
 import { Question } from "../types"
 import Input from "../components/Input"
+import { FaPlus, FaXmark } from "react-icons/fa6"
 
 interface Props {
   questionState: Question
@@ -57,52 +58,39 @@ const QuestionInputByType = (props: Props) => {
     }))
   }
 
-  switch (questionState.type) {
-    case "number":
-      return (
-        <p className="border-b border-dashed border-slate-300 mt-5 p-1 text-gray-500 text-sm font-light w-full">
-          Number type answer
-        </p>
-      )
-    case "select":
-      return (
-        <div className="flex flex-col">
-          {questionState.options.map((option, idx) => (
-            <div key={option.id} className="relative mt-2">
-              <Input
-                key={option.id}
-                placeholder={`Option ${idx + 1}`}
-                value={option.label}
-                wrapperClass="border-b border-0 rounded-none w-fit"
-                onChange={(e) => handleInputChange(e, option.id)}
-                onBlur={() => handleInputBlur(option.id)}
+  if (questionState.type === "select") {
+    return (
+      <div className="flex flex-col">
+        {questionState.options.map((option, idx) => (
+          <div key={option.id} className="relative mt-2">
+            <Input
+              key={option.id}
+              placeholder={`Option ${idx + 1}`}
+              value={option.label}
+              wrapperClass="border-0 rounded-none"
+              inputClass="border-b border-gray-200 focus:border-b focus:border-indigo-600 focus:outline-hidden"
+              onChange={(e) => handleInputChange(e, option.id)}
+              onBlur={() => handleInputBlur(option.id)}
+            />
+            {idx !== 0 && (
+              <FaXmark
+                onClick={() => handleDeleteOption(option.id)}
+                color="grey"
+                className="absolute top-1/2 right-6 -translate-y-1/2 cursor-pointer"
               />
-              {idx !== 0 && (
-                <button
-                  className="absolute hover:bg-gray-200 top-1/2 right-6 -translate-y-1/2 px-2.5 py-0.5 rounded-sm flex items-center"
-                  onClick={() => handleDeleteOption(option.id)}
-                >
-                  x
-                </button>
-              )}
-            </div>
-          ))}
-          <button
-            className="mr-auto my-4 px-2 py-1 cursor-pointer hover:bg-gray-200 rounded-sm"
-            onClick={handleAddOption}
-          >
-            Add option
-          </button>
-        </div>
-      )
-    case "text":
-    default:
-      return (
-        <p className="border-b border-dashed border-slate-300 mt-5 p-1 text-gray-500 text-sm font-light w-full">
-          Text type answer
-        </p>
-      )
+            )}
+          </div>
+        ))}
+        <button
+          className="flex items-center gap-x-2 mr-auto my-4 px-2 py-1 cursor-pointer hover:bg-indigo-50 rounded-sm"
+          onClick={handleAddOption}
+        >
+          <FaPlus /> Add option
+        </button>
+      </div>
+    )
   }
+  return null
 }
 
 export default QuestionInputByType

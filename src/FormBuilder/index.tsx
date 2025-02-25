@@ -5,11 +5,12 @@ import { delay, isFormBuilderValid } from "../helpers"
 import QuestionBlock from "./QuestionBlock"
 import Input from "../components/Input"
 import { useNavigate } from "react-router-dom"
+import toast from "react-hot-toast"
+import { FaPlus } from "react-icons/fa6"
 
 const FormBuilder = () => {
   const { formInfo, setFormInfo } = useFormContext()
   const [isFormValid, setIsFormValid] = useState(false)
-  const [isPublishing, setIsPublishing] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -18,23 +19,30 @@ const FormBuilder = () => {
   }, [formInfo])
 
   const handlePublishForm = async () => {
-    setIsPublishing(true)
-    await delay(800)
-    setIsPublishing(false)
-    return navigate(`/${formInfo.id}`)
+    toast.promise(
+      async () => {
+        await delay(800)
+        return navigate(`/${formInfo.id}`)
+      },
+      {
+        loading: "Publishing your form...",
+        success: "Form published",
+        error: "Oops! An error occured. Please try again!",
+      }
+    )
   }
 
   return (
-    <div className="flex flex-col w-full bg-white m-auto p-5 rounded-lg">
+    <div className="flex flex-col w-full bg-transparent m-auto px-5 rounded-lg">
       <Input
         wrapperClass="border-0"
-        inputClass="text-lg font-bold p-2 blur:py-0 focus:outline-1 focus:outline-blue-500 rounded-sm"
+        inputClass="text-lg font-bold p-2 blur:py-0 focus:outline-1 focus:outline-indigo-700 rounded-sm"
         value={formInfo.name}
         onChange={(e) => setFormInfo({ ...formInfo, name: e.target.value })}
       />
       <Input
         wrapperClass="border-0"
-        inputClass="text-sm text-gray-500 font-normal p-2 focus:outline-1 focus:outline-blue-500 rounded-sm italic"
+        inputClass="text-sm text-gray-500 font-normal p-2 focus:outline-1 focus:outline-indigo-700 rounded-sm italic"
         value={formInfo.description}
         placeholder="Form description"
         onChange={(e) =>
@@ -44,9 +52,9 @@ const FormBuilder = () => {
       {formInfo.questions.map((question) => (
         <QuestionBlock key={question.id} question={question} />
       ))}
-      <div className="flex justify-between w-full">
+      <div className="flex justify-between w-full mt-14">
         <button
-          className="border w-fit px-2 py-1 rounded-sm disabled:border-gray-300 disabled:text-gray-400"
+          className="flex items-center gap-x-2 w-fit px-4 py-2 rounded-sm hover:bg-indigo-50 cursor-pointer disabled:cursor-default disabled:hover:bg-white disabled:border disabled:border-gray-100 disabled:text-gray-400"
           disabled={!isFormValid}
           onClick={() =>
             setFormInfo({
@@ -58,14 +66,15 @@ const FormBuilder = () => {
             })
           }
         >
+          <FaPlus />
           Add question
         </button>
         <button
-          className="border w-fit ml-auto px-2 py-1 rounded-sm disabled:border-gray-300 disabled:text-gray-400"
+          className="bg-indigo-700 px-6 py-2 text-white w-fit ml-auto rounded-sm disabled:bg-slate-100 disabled:text-gray-400"
           onClick={handlePublishForm}
           disabled={!isFormValid}
         >
-          {isPublishing ? "Publishing.." : "Publish"}
+          Publish
         </button>
       </div>
     </div>

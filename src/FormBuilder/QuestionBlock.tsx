@@ -6,6 +6,8 @@ import Dropdown from "../components/Dropdown"
 import { questionTypeOptions } from "../constants"
 import { isQuestionValid, saveItemToLocalStorage } from "../helpers"
 import QuestionInputByType from "./QuestionInputByType"
+import { FaRegTrashCan } from "react-icons/fa6"
+import Spinner from "../components/Spinner"
 
 interface Props {
   question: Question
@@ -33,8 +35,6 @@ const QuestionBlock = (props: Props) => {
   useEffect(() => {
     if (!debouncedQuestionState.question) return
     const timer = setTimeout(() => {
-      setSaving(false)
-
       setFormInfo((prevFormInfo) => {
         let isUpdated = false
 
@@ -59,6 +59,7 @@ const QuestionBlock = (props: Props) => {
 
         return updatedFormInfo
       })
+      setSaving(false)
     }, 500)
 
     return () => clearTimeout(timer)
@@ -106,13 +107,14 @@ const QuestionBlock = (props: Props) => {
   }
 
   return (
-    <div className="my-4 border border-gray-300 p-4 rounded-xl w-full">
-      <div className="flex justify-between gap-x-4">
+    <div className="my-4 bg-white border-1 rounded-md border-gray-200 px-4 py-6 w-full">
+      <div className="flex justify-between gap-x-4 items-center">
         <Input
           value={questionState.question}
           label="Question title *"
           name="question"
           onChange={handleChange}
+          inputClass="focus:outline-1 focus:outline-indigo-700 rounded-md"
         />
         <Dropdown
           name="type"
@@ -121,15 +123,18 @@ const QuestionBlock = (props: Props) => {
           options={questionTypeOptions}
           onChange={handleChange}
         />
-        {/* TODO: update saving loader */}
-        {saving && <span>{saving ? "saving.." : "saved"}</span>}
+        <div
+          className={`h-auto w-8 object-fit transition-discrete ${saving ? "opacity-100" : "opacity-0"}`}
+        >
+          <Spinner />
+        </div>
       </div>
       <QuestionInputByType
         questionState={questionState}
         setQuestionState={setQuestionState}
       />
       {questionState.type === "number" && (
-        <div className="flex items-center gap-x-2 mt-2">
+        <div className="flex h-7 items-center gap-x-2 mt-6">
           <input
             type="checkbox"
             name="isRangeEnabled"
@@ -158,8 +163,9 @@ const QuestionBlock = (props: Props) => {
           )}
         </div>
       )}
-      <div className="flex items-center gap-x-2">
+      <div className="flex items-center gap-x-2 pt-6">
         <input
+          className="ml-auto "
           type="checkbox"
           name="isRequired"
           id="isRequired"
@@ -167,12 +173,12 @@ const QuestionBlock = (props: Props) => {
           onChange={handleChange}
         />
         <label>Mandatory</label>
-        <button
-          className="border w-fit my-4 ml-auto px-2 py-1 rounded-sm"
+
+        <FaRegTrashCan
+          className="ml-8 text-xl"
+          color="red"
           onClick={handleDeleteQuestion}
-        >
-          Delete question
-        </button>
+        />
       </div>
     </div>
   )

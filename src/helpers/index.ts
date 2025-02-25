@@ -11,7 +11,7 @@ export const isQuestionValid = (questionData: Question) => {
         const hasValidRange = range &&
             Object.keys(range).length === 2 &&
             String(range.min)?.trim() !== "" &&
-            String(range.max)?.trim() !== "";
+            String(range.max)?.trim() !== "" && range.min < range.max
         return hasValidRange
     }
     if (type === 'select' || type == 'multi-select') {
@@ -42,7 +42,6 @@ export const isFieldValid = (field: Question, value: string | number | string[])
         if (field.isRequired && isNaN(value as number)) return "The value must be a number"
         if (field.isRangeEnabled && isRangeValid(field.range)) {
             const { min, max } = field.range;
-            console.log(min, max, value)
             if ((value as number) < min || (value as number) > max) {
                 return `Value must be between ${min} and ${max}`;
             }
