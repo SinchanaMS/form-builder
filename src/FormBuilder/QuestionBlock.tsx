@@ -84,11 +84,15 @@ const QuestionBlock = (props: Props) => {
   }
 
   const handleRangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuestionState({
-      ...questionState,
-      ...(questionState.range && {
-        range: { ...questionState.range, [e.target.name]: e.target.value },
-      }),
+    setQuestionState((prevQuestionState) => {
+      if (!prevQuestionState.range) return prevQuestionState
+      return {
+        ...prevQuestionState,
+        range: {
+          ...prevQuestionState.range,
+          [e.target.name]: Number(e.target.value),
+        },
+      }
     })
   }
 

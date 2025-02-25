@@ -68,7 +68,7 @@ const QuestionInputByType = (props: Props) => {
       return (
         <div className="flex flex-col">
           {questionState.options.map((option, idx) => (
-            <div className="relative mt-2">
+            <div key={option.id} className="relative mt-2">
               <Input
                 key={option.id}
                 placeholder={`Option ${idx + 1}`}

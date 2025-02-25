@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 import { FormInfo } from "./types"
 import { placeholderQuestion } from "./constants"
 import FormContext from "./contexts/FormContext"
-import FormBuilder from "./FormBuilder"
 import { getItemFromLocalStorage } from "./helpers"
+import { Outlet } from "react-router-dom"
 
 function App() {
   const [formInfo, setFormInfo] = useState<FormInfo>({
@@ -23,7 +23,7 @@ function App() {
     <FormContext.Provider value={{ formInfo, setFormInfo }}>
       <div className=" bg-slate-100 m-auto p-6 min-h-dvh">
         <div className="flex flex-col max-w-3xl bg-white m-auto p-5 rounded-lg">
-          <FormBuilder />
+          <Outlet />
         </div>
       </div>
     </FormContext.Provider>
