@@ -129,7 +129,7 @@ const QuestionBlock = (props: Props) => {
         setQuestionState={setQuestionState}
       />
       {questionState.type === "number" && (
-        <div className="flex h-7 items-center gap-x-2 mt-6 mb-6">
+        <div className="flex h-7 items-center gap-x-2 mt-6 mb-18 sm:mb-6 flex-wrap sm:flex-nowrap">
           <input
             type="checkbox"
             name="isRangeEnabled"
@@ -139,12 +139,14 @@ const QuestionBlock = (props: Props) => {
           />
           <label>Enable range </label>
           {questionState.isRangeEnabled && (
-            <div className="flex flex-col w-fit ml-auto mt-4">
-              <div className="flex w-fit ml-auto gap-x-4">
+            <div className="flex flex-col w-fit ml-auto mt-4 ">
+              <div className="flex ml-auto gap-x-4">
                 <Input
                   label="Min *"
                   name="min"
                   type="number"
+                  wrapperClass="w-1/4 sm:w-full"
+                  inputClass="w-full"
                   value={questionState.range?.min}
                   onChange={handleRangeInput}
                 />
@@ -152,6 +154,8 @@ const QuestionBlock = (props: Props) => {
                   label="Max *"
                   name="max"
                   type="number"
+                  wrapperClass="w-1/4 sm:w-full"
+                  inputClass="w-full"
                   value={questionState.range?.max}
                   onChange={handleRangeInput}
                 />
@@ -177,11 +181,13 @@ const QuestionBlock = (props: Props) => {
         >
           <Spinner />
         </div>
-        <FaRegTrashCan
-          className="text-xl sm:ml-2"
-          color="red"
-          onClick={handleDeleteQuestion}
-        />
+        {formInfo.questions.length !== 1 && (
+          <FaRegTrashCan
+            className="text-xl sm:ml-2"
+            color="red"
+            onClick={handleDeleteQuestion}
+          />
+        )}
       </div>
     </div>
   )
