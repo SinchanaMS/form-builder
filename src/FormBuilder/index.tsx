@@ -70,7 +70,7 @@ const FormBuilder = () => {
           Add question
         </button>
         <button
-          className="bg-indigo-700 px-4 py-2 sm:px-6 sm:py-2 text-white w-fit ml-auto rounded-sm disabled:bg-slate-100 disabled:text-gray-400"
+          className="bg-indigo-700 px-4 py-2 sm:px-6 sm:py-2 text-white w-fit ml-auto rounded-sm cursor-pointer disabled:cursor-default disabled:bg-slate-100 disabled:text-gray-400"
           onClick={handlePublishForm}
           disabled={!isFormValid}
         >

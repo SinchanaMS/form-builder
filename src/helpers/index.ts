@@ -28,10 +28,16 @@ export const saveItemToLocalStorage = (key: string, value: unknown) => {
     return localStorage.setItem(key, JSON.stringify(value))
 }
 
-export const getItemFromLocalStorage = <T>(key: string): T | null => {
+export const getItemFromLocalStorage = <T>(key: string): Promise<T | null> => {
     const item = localStorage.getItem(key);
-    return item ? (JSON.parse(item) as T) : null;
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const formInfo = item ? (JSON.parse(item) as T) : null
+            resolve(formInfo)
+        }, 1000)
+    })
 }
+
 const isRangeValid = (range?: { min?: number; max?: number }): range is { min: number; max: number } =>
     range !== undefined && typeof range.min === "number" && typeof range.max === "number";
 
