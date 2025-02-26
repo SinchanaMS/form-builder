@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { FormInfo } from "./types"
-import { placeholderQuestion } from "./constants"
+import { initialFormState } from "./constants"
 import FormContext from "./contexts/FormContext"
 import { getItemFromLocalStorage } from "./helpers"
 import { Outlet } from "react-router-dom"
@@ -10,10 +10,8 @@ import Shimmer from "./components/Shimmer"
 function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [formInfo, setFormInfo] = useState<FormInfo>({
+    ...initialFormState,
     id: `${Date.now()}`,
-    name: "Sample form",
-    description: "",
-    questions: [placeholderQuestion],
   })
 
   const fetchFormInfo = async () => {

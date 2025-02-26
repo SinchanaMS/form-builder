@@ -1,5 +1,6 @@
 import { Question } from "./types";
 
+
 export const placeholderQuestion: Question = {
     id: `${Date.now()}`,
     question: "",
@@ -16,3 +17,10 @@ export const questionTypeOptions = [
     { id: "number", label: "Number" },
     { id: "select", label: "Select" },
 ]
+
+export const initialFormState = {
+    id: `${Date.now()}`,
+    name: "Sample form",
+    description: "",
+    questions: [placeholderQuestion],
+}

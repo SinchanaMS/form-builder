@@ -129,7 +129,7 @@ const QuestionBlock = (props: Props) => {
         setQuestionState={setQuestionState}
       />
       {questionState.type === "number" && (
-        <div className="flex h-7 items-center gap-x-2 mt-6">
+        <div className="flex h-7 items-center gap-x-2 mt-6 mb-6">
           <input
             type="checkbox"
             name="isRangeEnabled"
@@ -139,21 +139,26 @@ const QuestionBlock = (props: Props) => {
           />
           <label>Enable range </label>
           {questionState.isRangeEnabled && (
-            <div className="flex w-fit ml-auto gap-x-4">
-              <Input
-                label="Min *"
-                name="min"
-                type="number"
-                value={question.range?.min}
-                onChange={handleRangeInput}
-              />
-              <Input
-                label="Max *"
-                name="max"
-                type="number"
-                value={question.range?.max}
-                onChange={handleRangeInput}
-              />
+            <div className="flex flex-col w-fit ml-auto mt-4">
+              <div className="flex w-fit ml-auto gap-x-4">
+                <Input
+                  label="Min *"
+                  name="min"
+                  type="number"
+                  value={question.range?.min}
+                  onChange={handleRangeInput}
+                />
+                <Input
+                  label="Max *"
+                  name="max"
+                  type="number"
+                  value={question.range?.max}
+                  onChange={handleRangeInput}
+                />
+              </div>
+              <p className="text-xs text-yellow-600">
+                Note: If range is enabled, min/max is mandatory.
+              </p>
             </div>
           )}
         </div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { placeholderQuestion } from "../constants"
+import { initialFormState, placeholderQuestion } from "../constants"
 import { useFormContext } from "../contexts/FormContext"
-import { delay, isFormBuilderValid } from "../helpers"
+import { delay, isFormBuilderValid, saveItemToLocalStorage } from "../helpers"
 import QuestionBlock from "./QuestionBlock"
 import Input from "../components/Input"
 import { useNavigate } from "react-router-dom"
@@ -11,12 +11,37 @@ import { FaPlus } from "react-icons/fa6"
 const FormBuilder = () => {
   const { formInfo, setFormInfo } = useFormContext()
   const [isFormValid, setIsFormValid] = useState(false)
+  const [debouncedFormInput, setDebouncedFormInput] = useState({})
   const navigate = useNavigate()
 
   useEffect(() => {
     const isValid = isFormBuilderValid(formInfo)
     setIsFormValid(isValid)
   }, [formInfo])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedFormInput({
+        ...formInfo,
+        name: formInfo.name,
+        description: formInfo.description,
+      })
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [formInfo])
+
+  useEffect(() => {
+    const existingData = JSON.parse(
+      localStorage.getItem("formInfo") ||
+        JSON.stringify({
+          ...initialFormState,
+          id: `${Date.now()}`,
+        })
+    )
+    const updatedData = { ...existingData, ...debouncedFormInput }
+    saveItemToLocalStorage("formInfo", updatedData)
+  }, [debouncedFormInput, formInfo])
 
   const handlePublishForm = async () => {
     toast.promise(
@@ -55,7 +80,7 @@ const FormBuilder = () => {
       <div className="flex justify-between w-full mt-14">
         <button
           className="flex items-center gap-x-2 w-fit px-2 sm:px-4 sm:py-2 rounded-sm hover:bg-indigo-50 cursor-pointer disabled:cursor-default disabled:hover:bg-white disabled:border disabled:border-gray-100 disabled:text-gray-400"
-          disabled={!isFormValid}
+          disabled={!!formInfo.questions.length && !isFormValid}
           onClick={() =>
             setFormInfo({
               ...formInfo,

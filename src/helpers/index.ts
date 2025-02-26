@@ -21,6 +21,7 @@ export const isQuestionValid = (questionData: Question) => {
 
 export const isFormBuilderValid = (formInfo: FormInfo) => {
     if (!formInfo.name) return false;
+    if (!formInfo.questions.length) return false
     return formInfo.questions.every(isQuestionValid);
 }
 
@@ -43,7 +44,7 @@ const isRangeValid = (range?: { min?: number; max?: number }): range is { min: n
 
 export const isFieldValid = (field: Question, value: string | number | string[]) => {
 
-    if (field.isRequired && !value) return "*This field is required" //TODO: based on value type
+    if (field.isRequired && !value) return "*This field is required"
     if (field.type === 'number') {
         if (field.isRequired && isNaN(value as number)) return "The value must be a number"
         if (field.isRangeEnabled && isRangeValid(field.range)) {
