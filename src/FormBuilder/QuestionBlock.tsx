@@ -145,14 +145,14 @@ const QuestionBlock = (props: Props) => {
                   label="Min *"
                   name="min"
                   type="number"
-                  value={question.range?.min}
+                  value={questionState.range?.min}
                   onChange={handleRangeInput}
                 />
                 <Input
                   label="Max *"
                   name="max"
                   type="number"
-                  value={question.range?.max}
+                  value={questionState.range?.max}
                   onChange={handleRangeInput}
                 />
               </div>

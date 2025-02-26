@@ -41,7 +41,7 @@ const FormBuilder = () => {
     )
     const updatedData = { ...existingData, ...debouncedFormInput }
     saveItemToLocalStorage("formInfo", updatedData)
-  }, [debouncedFormInput, formInfo])
+  }, [debouncedFormInput])
 
   const handlePublishForm = async () => {
     toast.promise(
